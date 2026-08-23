@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Surprise!</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fdf2f8; /* Soft pink background */
+            color: #333;
+            text-align: center;
+            padding: 50px;
+            margin: 0;
+        }
+
+        h1 {
+            color: #db2777; /* Deep pink for titles */
+            font-size: 3em;
+        }
+
+        /* --- Countdown State Styles --- */
+        #countdown-state {
+            display: block; /* Shown by default */
+        }
+
+        #clockdiv {
+            font-family: sans-serif;
+            color: #fff;
+            display: inline-block;
+            font-weight: 100;
+            text-align: center;
+            font-size: 30px;
+            margin-top: 30px;
+        }
+
+        #clockdiv > div {
+            padding: 15px 20px;
+            border-radius: 10px;
+            background: #f472b6; /* Lighter pink background for numbers */
+            display: inline-block;
+            margin: 5px;
+        }
+
+        #clockdiv div span {
+            padding: 10px;
+            border-radius: 5px;
+            background: #db2777; /* Darker pink for numbers */
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        .smalltext {
+            padding-top: 5px;
+            font-size: 16px;
+            color: #fff;
+        }
+
+        /* --- Birthday State Styles --- */
+        #birthday-state {
+            display: none; /* Hidden by default until the JavaScript reveals it */
+        }
+
+        .illustration-container {
+            margin-top: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .illustration-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .wishes {
+            font-size: 1.5em;
+            color: #701a75; /* Purple for the wishes text */
+            margin-top: 30px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- STATE 1: Shown BEFORE the birthday -->
+    <div id="countdown-state">
+        <h1>Counting down to a special day...</h1>
+        <p>Get ready for a surprise!</p>
+        <div id="clockdiv">
+            <div><span class="days"></span><div class="smalltext">Days</div></div>
+            <div><span class="hours"></span><div class="smalltext">Hours</div></div>
+            <div><span class="minutes"></span><div class="smalltext">Minutes</div></div>
+            <div><span class="seconds"></span><div class="smalltext">Seconds</div></div>
+        </div>
+    </div>
+
+    <!-- STATE 2: Shown ON the birthday (September 6th) -->
+    <div id="birthday-state">
+        <h1>HAPPY BIRTHDAY! 🎉</h1>
+        
+        <div class="illustration-container">
+            <!-- This references the illustration you saved -->
+            <img src="birthday_roses.png" alt="Illustration of a girl giving a boy roses">
+        </div>
+
+        <p class="wishes">Wishing you a fantastic day filled with happiness and roses! 🌹</p>
+    </div>
+
+    <script>
+        // --- 1. Define the Birthday Date ---
+        // Format: 'Month Day, Year'
+        const birthdayDateStr = 'September 6, 2024'; 
+
+        // --- 2. State Switching Logic ---
+        function checkState() {
+            const now = new Date();
+            const birthday = new Date(birthdayDateStr);
+
+            const countdownStateEl = document.getElementById('countdown-state');
+            const birthdayStateEl = document.getElementById('birthday-state');
+
+            // Compare times (ignoring the exact time of day for simplicity, 
+            // the reveal will happen at 00:00 on the 6th)
+            if (now.getTime() >= birthday.getTime()) {
+                // It's the birthday! Hide countdown, show reveal.
+                countdownStateEl.style.display = 'none';
+                birthdayStateEl.style.display = 'block';
+            } else {
+                // It's before the birthday. Show countdown, hide reveal.
+                countdownStateEl.style.display = 'block';
+                birthdayStateEl.style.display = 'none';
+                // Start the countdown timer
+                initializeClock('clockdiv', birthdayDateStr);
+            }
+        }
+
+        // --- 3. Countdown Timer Logic (reused from previous step) ---
+        function getTimeRemaining(endtime) {
+            const t = Date.parse(endtime) - Date.parse(new Date());
+            const seconds = Math.floor((t / 1000) % 60);
+            const minutes = Math.floor((t / 1000 / 60) % 60);
+            const hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+            const days = Math.floor(t / (1000 * 60 * 60 * 24));
+            return {
+                'total': t,
+                'days': days,
+                'hours': hours,
+                'minutes': minutes,
+                'seconds': seconds
+            };
+        }
+
+        function initializeClock(id, endtime) {
+            const clock = document.getElementById(id);
+            const daysSpan = clock.querySelector('.days');
+            const hoursSpan = clock.querySelector('.hours');
+            const minutesSpan = clock.querySelector('.minutes');
+            const secondsSpan = clock.querySelector('.seconds');
+
+            function updateClock() {
+                const t = getTimeRemaining(endtime);
+                daysSpan.innerHTML = t.days;
+                hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
+                minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+                secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+
+                if (t.total <= 0) {
+                    clearInterval(timeinterval);
+                    // Force a state check when the countdown hits zero
+                    checkState(); 
+                }
+            }
+
+            updateClock();
+            const timeinterval = setInterval(updateClock, 1000);
+        }
+
+        // Run the state check immediately when the page loads
+        checkState();
+
+    </script>
+</body>
+</html>
