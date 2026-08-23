@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <style>
+        /* Floral Theme CSS Variables */
+        :root {
+            --primary-color: #d87093; /* Pale Violet Red / Rose */
+            --secondary-color: #8fbc8f; /* Dark Sea Green / Sage */
+            --bg-color: #fffaf0; /* Floral White */
+            --text-color: #4a4a4a;
+            --card-bg: rgba(255, 255, 255, 0.85);
+        }
+
+        body {
+            font-family: 'Georgia', serif; /* Elegant, classic font */
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            /* A soft, subtle floral pattern from HeroPatterns */
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d87093' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        /* Hero Section */
+        header {
+            background: linear-gradient(rgba(216, 112, 147, 0.8), rgba(143, 188, 143, 0.8)), url('https://images.unsplash.com/photo-1490750967868-88aa4486c946?q=80&w=2000&auto=format&fit=crop') center/cover;
+            color: white;
+            padding: 100px 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border-bottom: 5px solid var(--primary-color);
+        }
+
+        header h1 {
+            font-size: 4em;
+            margin: 0;
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        header p {
+            font-size: 1.2em;
+            font-style: italic;
+        }
+
+        /* Countdown Section */
+        #countdown {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: -30px auto 40px auto;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            max-width: 600px;
+            backdrop-filter: blur(5px);
+            border: 2px solid var(--secondary-color);
+        }
+
+        .time-box {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .time-box span {
+            display: block;
+            font-size: 0.4em;
+            color: var(--secondary-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Gallery Grid */
+        h2 {
+            color: var(--primary-color);
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            padding: 20px 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 15px;
+            border: 3px solid white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.05) rotate(-2deg);
+        }
+
+        /* Messages Section */
+        .messages {
+            padding: 40px 20px;
+            margin-top: 20px;
+        }
+
+        .message-card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 15px;
+            max-width: 600px;
+            margin: 15px auto;
+            border-top: 5px solid var(--secondary-color);
+            text-align: left;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        .message-card::before {
+            content: "🌸";
+            position: absolute;
+            top: -15px;
+            right: 20px;
+            font-size: 1.5em;
+        }
+
+        footer {
+            padding: 20px;
+            background: var(--secondary-color);
+            color: white;
+            margin-top: 40px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HERO SECTION -->
+    <header>
+        <h1>Happy Birthday, [Friend's Name]! 🌷</h1>
+        <p>Wishing you a year as beautiful as a garden in full bloom.</p>
+    </header>
+
+    <!-- COUNTDOWN TIMER -->
+    <div id="countdown">
+        <div class="time-box"><span id="days">00</span><span>Days</span></div>
+        <div class="time-box"><span id="hours">00</span><span>Hours</span></div>
+        <div class="time-box"><span id="minutes">00</span><span>Minutes</span></div>
+        <div class="time-box"><span id="seconds">00</span><span>Seconds</span></div>
+    </div>
+
+    <!-- PHOTO GALLERY -->
+    <h2>Blooming Memories 🌺</h2>
+    <div class="gallery">
+        <!-- REPLACE WITH REAL IMAGE LINKS -->
+        <img src="https://images.unsplash.com/photo-1526047932273-341f2a7631f9?q=80&w=400&auto=format&fit=crop" alt="Memory 1">
+        <img src="https://images.unsplash.com/photo-1460039230329-eb070fc6c90c?q=80&w=400&auto=format&fit=crop" alt="Memory 2">
+        <img src="https://images.unsplash.com/photo-1508784411316-02b8cd4d3a3a?q=80&w=400&auto=format&fit=crop" alt="Memory 3">
+    </div>
+
+    <!-- MESSAGES SECTION -->
+    <div class="messages">
+        <h2>Birthday Wishes 🌻</h2>
+        
+        <div class="message-card">
+            <p>"Happy birthday! I can't believe it's been [X] years since we met. Hope you have an amazing day!"</p>
+            <strong>- [Your Name]</strong>
+        </div>
+
+        <div class="message-card">
+            <p>"Wishing you all the cake and happiness today. Let's celebrate soon!"</p>
+            <strong>- [Another Friend's Name]</strong>
+        </div>
+    </div>
+
+    <footer>
+        <p>Coded with 🌼 by [Your Name]</p>
+    </footer>
+
+    <!-- JAVASCRIPT FOR COUNTDOWN -->
+    <script>
+        // SET THE BIRTHDAY DATE HERE (Format: 'Month DD, YYYY HH:MM:SS')
+        const birthday = new Date('September 1, 2026 00:00:00').getTime();
+
+        const timer = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = birthday - now;
+
+            if (distance < 0) {
+                clearInterval(timer);
+                document.getElementById("countdown").innerHTML = "<h2>THE DAY HAS BLOSSOMED! 💐</h2>";
+                return;
+            }
+
+            document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
+            document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000);
+        }, 1000);
+    </script>
+</body>
+</html>
