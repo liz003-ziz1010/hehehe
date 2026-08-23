@@ -3,207 +3,293 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday!</title>
+    <title>Pixel Birthday Roses</title>
     <style>
-        /* Floral Theme CSS Variables */
+        /* CSS Variables for Pixel Theme */
         :root {
-            --primary-color: #d87093; /* Pale Violet Red / Rose */
-            --secondary-color: #8fbc8f; /* Dark Sea Green / Sage */
-            --bg-color: #fffaf0; /* Floral White */
-            --text-color: #4a4a4a;
-            --card-bg: rgba(255, 255, 255, 0.85);
+            --primary-color: #f25081; /* Bright Rose Pink */
+            --secondary-color: #3b0a2c; /* Deep Violet/Black */
+            --bg-color: #1a101d; /* Dark Dark Purple */
+            --text-color: #fce1ed;
+            --font-main: 'Courier New', Courier, monospace; /* Pixel-style font */
         }
 
         body {
-            font-family: 'Georgia', serif; /* Elegant, classic font */
+            font-family: var(--font-main);
             margin: 0;
             padding: 0;
             background-color: var(--bg-color);
-            /* A soft, subtle floral pattern from HeroPatterns */
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d87093' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
             color: var(--text-color);
             text-align: center;
+            /* A retro dark pixel pattern */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cg fill='%232e1d30' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M0 0h4v4H0V0zm4 4h4v4H4V4z'/%3E%3C/g%3E%3C/svg%3E");
+            overflow-x: hidden;
         }
 
-        /* Hero Section */
+        /* Set a max width and center the content */
+        .content-container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative; /* So petals can float over everything */
+            z-index: 1; /* Keep content above petals */
+        }
+
+        /* Pixel Header with Art and Text */
         header {
-            background: linear-gradient(rgba(216, 112, 147, 0.8), rgba(143, 188, 143, 0.8)), url('https://images.unsplash.com/photo-1490750967868-88aa4486c946?q=80&w=2000&auto=format&fit=crop') center/cover;
-            color: white;
-            padding: 100px 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            border-bottom: 5px solid var(--primary-color);
+            background-color: var(--secondary-color);
+            padding: 50px 20px;
+            border-bottom: 4px solid var(--primary-color);
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 8px 0 rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+            /* The header art from image_1.png */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://user-images.githubusercontent.com/6007894/281699564-98c4d284-8176-47a3-8356-9a9971844b20.png');
         }
 
         header h1 {
-            font-size: 4em;
+            font-size: 3.5em;
             margin: 0;
-            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 4px 4px 0 #000;
+            color: #fff;
         }
-        
+
         header p {
-            font-size: 1.2em;
-            font-style: italic;
+            font-size: 1.4em;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-shadow: 2px 2px 0 #000;
         }
 
-        /* Countdown Section */
-        #countdown {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin: -30px auto 40px auto;
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            max-width: 600px;
-            backdrop-filter: blur(5px);
-            border: 2px solid var(--secondary-color);
+        /* General Section Styling */
+        section {
+            background: #231527;
+            border: 4px solid var(--secondary-color);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
+            text-align: left;
         }
 
-        .time-box {
-            font-size: 1.8em;
+        section h2 {
+            font-size: 2em;
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 2px dashed var(--primary-color);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        /* Form/Input elements in pixel style */
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
             font-weight: bold;
             color: var(--primary-color);
         }
 
-        .time-box span {
-            display: block;
-            font-size: 0.4em;
-            color: var(--secondary-color);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Gallery Grid */
-        h2 {
-            color: var(--primary-color);
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            padding: 20px 40px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .gallery img {
+        .input-group select, .input-group input[type="text"], .btn {
+            font-family: var(--font-main);
+            font-size: 1.1em;
+            padding: 10px;
+            background: #2e1d30;
+            border: 4px solid var(--secondary-color);
+            color: var(--text-color);
+            border-radius: 4px;
             width: 100%;
-            height: 250px;
-            object-fit: cover;
-            border-radius: 15px;
-            border: 3px solid white;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
+            box-sizing: border-box;
         }
 
-        .gallery img:hover {
-            transform: scale(1.05) rotate(-2deg);
+        .input-group select:focus, .input-group input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
         }
 
-        /* Messages Section */
-        .messages {
-            padding: 40px 20px;
-            margin-top: 20px;
+        .btn {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            cursor: pointer;
+            width: auto;
+            display: inline-block;
+            text-transform: uppercase;
+            font-weight: bold;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+            margin-right: 10px;
         }
 
-        .message-card {
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 15px;
-            max-width: 600px;
-            margin: 15px auto;
-            border-top: 5px solid var(--secondary-color);
-            text-align: left;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-            position: relative;
+        .btn:hover {
+            background-color: #4a113a;
         }
 
-        .message-card::before {
-            content: "🌸";
-            position: absolute;
-            top: -15px;
-            right: 20px;
-            font-size: 1.5em;
+        .btn.btn-remove {
+            color: #ff4d4d;
         }
 
+        /* Checkbox styling */
+        .checkbox-group {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .checkbox-group input {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            accent-color: var(--primary-color);
+        }
+
+        /* Footer */
         footer {
             padding: 20px;
             background: var(--secondary-color);
-            color: white;
             margin-top: 40px;
             font-style: italic;
+        }
+
+        /* Petal Container for JS */
+        #petal-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* So petals don't block clicks */
+            z-index: 0; /* Petals go behind content */
         }
     </style>
 </head>
 <body>
 
-    <!-- HERO SECTION -->
-    <header>
-        <h1>Happy Birthday, [Friend's Name]! 🌷</h1>
-        <p>Wishing you a year as beautiful as a garden in full bloom.</p>
-    </header>
+    <!-- Container for dynamic petals -->
+    <div id="petal-container"></div>
 
-    <!-- COUNTDOWN TIMER -->
-    <div id="countdown">
-        <div class="time-box"><span id="days">00</span><span>Days</span></div>
-        <div class="time-box"><span id="hours">00</span><span>Hours</span></div>
-        <div class="time-box"><span id="minutes">00</span><span>Minutes</span></div>
-        <div class="time-box"><span id="seconds">00</span><span>Seconds</span></div>
-    </div>
+    <!-- Main page content -->
+    <div class="content-container">
+        <!-- HEADER WITH REFRESHED PIXEL ART -->
+        <header>
+            <h1>WELCOME, LIZ! (liz003-ziz1010)</h1>
+            <h1>HAPPY BIRTHDAY!</h1>
+            <p>A Special Pixelated Rose World For You</p>
+        </header>
 
-    <!-- PHOTO GALLERY -->
-    <h2>Blooming Memories 🌺</h2>
-    <div class="gallery">
-        <!-- REPLACE WITH REAL IMAGE LINKS -->
-        <img src="https://images.unsplash.com/photo-1526047932273-341f2a7631f9?q=80&w=400&auto=format&fit=crop" alt="Memory 1">
-        <img src="https://images.unsplash.com/photo-1460039230329-eb070fc6c90c?q=80&w=400&auto=format&fit=crop" alt="Memory 2">
-        <img src="https://images.unsplash.com/photo-1508784411316-02b8cd4d3a3a?q=80&w=400&auto=format&fit=crop" alt="Memory 3">
-    </div>
+        <!-- BUILD AND DEPLOYMENT SECTION -->
+        <section id="build">
+            <h2>Build and deployment</h2>
+            
+            <div class="input-group">
+                <label for="source">Source</label>
+                <select id="source">
+                    <option>Deploy from a branch</option>
+                </select>
+            </div>
 
-    <!-- MESSAGES SECTION -->
-    <div class="messages">
-        <h2>Birthday Wishes 🌻</h2>
+            <div class="input-group">
+                <label>Branch</label>
+                <p>Your GitHub Pages site is currently being built from the main branch. <a href="#">Learn more about source configuration.</a></p>
+                <input type="text" value="main" readonly style="width: auto; display: inline-block;">
+                <input type="text" value="/ (root)" readonly style="width: auto; display: inline-block;">
+                <button class="btn">Save</button>
+            </div>
         
-        <div class="message-card">
-            <p>"Happy birthday! I can't believe it's been [X] years since we met. Hope you have an amazing day!"</p>
-            <strong>- [Your Name]</strong>
-        </div>
+            <p><a href="#">Learn how to add a Jekyll theme to your site.</a></p>
+        </section>
 
-        <div class="message-card">
-            <p>"Wishing you all the cake and happiness today. Let's celebrate soon!"</p>
-            <strong>- [Another Friend's Name]</strong>
-        </div>
+        <!-- CUSTOM DOMAIN SECTION -->
+        <section id="domain">
+            <h2>Custom domain</h2>
+            <p>Custom domains allow you to serve your site from a domain other than <strong>liz003-ziz1010.github.io</strong>. <a href="#">Learn more about configuring custom domains.</a></p>
+            <div class="input-group">
+                <input type="text" placeholder="yourcustomdomain.com">
+                <button class="btn">Save</button>
+                <button class="btn btn-remove">Remove</button>
+            </div>
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="https" checked>
+                <label for="https">Enforce HTTPS</label>
+            </div>
+            <p style="font-size: 0.9em; opacity: 0.8;">Required for your site because you are using the default domain (liz003-ziz1010.github.io).</p>
+            <p style="font-size: 0.9em; opacity: 0.8;">HTTPS provides a layer of encryption that prevents others from snooping or tampering with traffic to your site. When HTTPS is enforced, your site will only be served over HTTPS. <a href="#">Learn more about securing your site with HTTPS.</a></p>
+        </section>
+
+        <!-- VISIBILITY SECTION -->
+        <section id="visibility">
+            <h2>Visibility</h2>
+            <p>With a GitHub Enterprise account, you can restrict access to your GitHub Pages site by publishing it privately. You can try GitHub Enterprise risk-free. <a href="#">Learn more about the visibility of your GitHub Pages site.</a></p>
+        </section>
     </div>
 
     <footer>
-        <p>Coded with 🌼 by [Your Name]</p>
+        <p>This is a 100% free, pixelated gift, hosted on GitHub Pages.</p>
     </footer>
 
-    <!-- JAVASCRIPT FOR COUNTDOWN -->
+    <!-- JAVASCRIPT FOR FALLING PETALS -->
     <script>
-        // SET THE BIRTHDAY DATE HERE (Format: 'Month DD, YYYY HH:MM:SS')
-        const birthday = new Date('September 1, 2026 00:00:00').getTime();
+        // Total number of petals to show at once
+        const PETAL_COUNT = 30;
+        const container = document.getElementById('petal-container');
 
-        const timer = setInterval(function() {
-            const now = new Date().getTime();
-            const distance = birthday - now;
+        // Character symbols for the petals (can be emoji or small images)
+        const petalSymbols = ['🌸', '🌹', '🌺', '•', '°'];
 
-            if (distance < 0) {
-                clearInterval(timer);
-                document.getElementById("countdown").innerHTML = "<h2>THE DAY HAS BLOSSOMED! 💐</h2>";
-                return;
-            }
+        for (let i = 0; i < PETAL_COUNT; i++) {
+            createPetal();
+        }
 
-            document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
-            document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000);
-        }, 1000);
+        function createPetal() {
+            const petal = document.createElement('div');
+            // Stylize the petal
+            petal.style.position = 'absolute';
+            petal.style.color = '#f25081'; // Pink
+            petal.style.fontSize = Math.random() * 20 + 10 + 'px'; // Random size
+            petal.style.fontFamily = 'Arial, sans-serif'; // For smooth emoji rendering
+            petal.style.userSelect = 'none'; // Prevents text selection
+            petal.style.zIndex = 0;
+            // Set random starting position (off-screen top)
+            petal.style.top = -50 + 'px';
+            petal.style.left = Math.random() * 100 + 'vw';
+            
+            // Random petal symbol
+            petal.innerHTML = petalSymbols[Math.floor(Math.random() * petalSymbols.length)];
+            
+            container.appendChild(petal);
+
+            // Animate the petal
+            animatePetal(petal);
+        }
+
+        function animatePetal(petal) {
+            const duration = Math.random() * 10000 + 5000; // Time to fall (5s to 15s)
+            const horizontalDrift = Math.random() * 200 - 100; // Drift left/right
+            const rotation = Math.random() * 720 - 360; // Rotation amount
+
+            petal.animate([
+                { // Keyframe 0%
+                    transform: 'translateY(0px) translateX(0px) rotate(0deg)',
+                    opacity: 1
+                },
+                { // Keyframe 100%
+                    // Move the petal down past the screen, drift it horizontally, and rotate it
+                    transform: `translateY(100vh) translateX(${horizontalDrift}px) rotate(${rotation}deg)`,
+                    opacity: 0.3 // Fade out slightly at the bottom
+                }
+            ], {
+                duration: duration,
+                easing: 'linear',
+                iterations: 1 // Only run once
+            }).onfinish = () => {
+                // When finished, remove this petal and create a new one at the top
+                petal.remove();
+                createPetal();
+            };
+        }
     </script>
 </body>
 </html>
