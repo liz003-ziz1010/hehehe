@@ -1,57 +1,32 @@
-const gift = document.getElementById("giftScene");
-const confetti = document.getElementById("confetti");
-const toast = document.getElementById("toast");
-const message = document.getElementById("message");
+// Target date: September 6, 2026
+const targetDate = new Date("September 6, 2026 00:00:00").getTime();
 
-function celebrate() {
-  gift.classList.add("open");
-  toast.classList.add("show");
-  message.scrollIntoView({ behavior: "smooth", block: "center" });
+function updateCandleCountdown() {
+    const now = new Date().getTime();
+    const distance = targetDate - now;
 
-  for (let i = 0; i < 85; i++) {
-    const p = document.createElement("span");
-    p.className = "confetti-piece";
-    p.style.left = Math.random() * 100 + "vw";
-    p.style.setProperty("--drift", (Math.random() * 260 - 130) + "px");
-    p.style.animationDuration = (2.2 + Math.random() * 2.4) + "s";
-    p.style.animationDelay = Math.random() * .45 + "s";
-    p.style.background = ["#ff3d78","#ffd13d","#16d8d2","#a76be8","#fff0d2","#ff8144"][Math.floor(Math.random()*6)];
-    p.style.width = (5 + Math.random() * 7) + "px";
-    p.style.height = (7 + Math.random() * 12) + "px";
-    confetti.appendChild(p);
-    setTimeout(() => p.remove(), 5200);
-  }
+    if (distance < 0) {
+        document.getElementById("candle-countdown").innerHTML = "<h2>Happy Birthday!</h2>";
+        return;
+    }
 
-  setTimeout(() => toast.classList.remove("show"), 1500);
-  setTimeout(() => gift.classList.remove("open"), 1000);
+    // Time calculations
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+    // Format as a single string of numbers (e.g., "051230" for 5 days, 12 hours, 30 mins)
+    const timeString = `${days.toString().padStart(2, '0')}${hours.toString().padStart(2, '0')}${minutes.toString().padStart(2, '0')}`;
+
+    // Convert string to HTML img tags
+    const countdownHTML = timeString.split('').map(digit => {
+        // Assumes you have images named candle-0.png through candle-9.png
+        return `<img src="assets/candle-${digit}.png" alt="${digit}" class="candle-digit">`;
+    }).join('');
+
+    document.getElementById("candle-countdown").innerHTML = countdownHTML;
 }
 
-gift.addEventListener("click", celebrate);
-gift.addEventListener("keydown", e => {
-  if (e.key === "Enter" || e.key === " ") {
-    e.preventDefault();
-    celebrate();
-  }
-});
-
-// Gentle floating pixels that appear as the page is opened.
-document.addEventListener("pointermove", e => {
-  if (Math.random() > 0.96) {
-    const dot = document.createElement("span");
-    dot.textContent = "·";
-    dot.style.position = "fixed";
-    dot.style.left = e.clientX + "px";
-    dot.style.top = e.clientY + "px";
-    dot.style.color = "#ffd13d";
-    dot.style.pointerEvents = "none";
-    dot.style.zIndex = "5";
-    dot.style.fontSize = "18px";
-    dot.style.transition = "transform .8s, opacity .8s";
-    document.body.appendChild(dot);
-    requestAnimationFrame(() => {
-      dot.style.transform = "translateY(-25px)";
-      dot.style.opacity = "0";
-    });
-    setTimeout(() => dot.remove(), 850);
-  }
-});
+// Update every minute since we aren't showing seconds
+setInterval(updateCandleCountdown, 60000);
+updateCandleCountdown(); // Initial call
