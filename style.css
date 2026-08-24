@@ -70,3 +70,13 @@ h1, h2 {
     image-rendering: pixelated;
     display: block;
 }
+/* Petal Explosion Canvas */
+#petal-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none; /* Allows user to click through the animation */
+    z-index: 9999;
+}
