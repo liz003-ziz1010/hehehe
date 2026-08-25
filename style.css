@@ -1,177 +1,364 @@
-:root {
-    --bg-color: #fdf6e3;
-    --text-color: #333;
-    --pixel-border: #000;
+/* ===================== BASE / PIXEL THEME ===================== */
+* {
+  box-sizing: border-box;
+  image-rendering: pixelated;
 }
 
-body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-family: 'Press Start 2P', monospace;
-    text-align: center;
-    margin: 0;
-    padding: 20px;
+:root {
+  --bg-dark: #14102b;
+  --bg-darker: #0b0818;
+  --pink: #ff6fb0;
+  --hot-pink: #ff3b9a;
+  --cyan: #6ff0ff;
+  --yellow: #ffe15a;
+  --purple: #9b5de5;
+  --candy: #ff8fa3;
+  --panel: #201a3d;
+  --border: #ffffff;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: var(--bg-dark);
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 2px, transparent 2px);
+  background-size: 24px 24px;
+  color: #f5f5ff;
+  font-family: 'Press Start 2P', monospace;
+  overflow-x: hidden;
+  text-align: center;
 }
 
 .hidden {
-    display: none !important;
+  display: none !important;
 }
 
-#pre-birthday-view {
-    min-height: 80vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+/* Fullscreen fx canvas for confetti + petals, non-blocking */
+#fx-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 999;
 }
 
-/* Candle Countdown */
-.countdown-container {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 30px;
+.pixel-title {
+  font-size: clamp(1.1rem, 4vw, 2.2rem);
+  color: var(--yellow);
+  text-shadow:
+    3px 3px 0 var(--hot-pink),
+    6px 6px 0 var(--purple);
+  letter-spacing: 2px;
+  line-height: 1.6;
+  padding: 30px 10px 10px;
+  margin: 0;
 }
 
-.candle-digit {
-    width: 40px;
-    height: auto;
-    image-rendering: pixelated;
+.reveal-title {
+  color: var(--cyan);
+  text-shadow: 3px 3px 0 var(--purple), 6px 6px 0 var(--hot-pink);
 }
 
-/* Animated CSS Pixel Cake */
+.main-hbd {
+  margin-top: 30px;
+  animation: pop-in 0.6s steps(6) both;
+}
+
+@keyframes pop-in {
+  0% { transform: scale(0); opacity: 0; }
+  70% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+.sub-instruction {
+  font-size: 0.6rem;
+  color: var(--candy);
+  margin: 10px auto 30px;
+  letter-spacing: 1px;
+}
+
+.pixel-heart {
+  color: var(--hot-pink);
+  font-size: 2rem;
+  margin-top: 40px;
+  animation: heartbeat 1.2s infinite steps(4);
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+}
+
+/* ===================== COUNTDOWN TIMER ===================== */
+.timer-box {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin: 20px auto 40px;
+}
+
+.time-card {
+  background: var(--panel);
+  border: 4px solid var(--border);
+  box-shadow: 6px 6px 0 rgba(0,0,0,0.5);
+  padding: 14px 10px;
+  min-width: 70px;
+  border-radius: 0;
+}
+
+.time-card span {
+  display: block;
+  font-size: clamp(1.3rem, 5vw, 2rem);
+  color: var(--cyan);
+  text-shadow: 2px 2px 0 var(--purple);
+}
+
+.time-card label {
+  display: block;
+  font-size: 0.5rem;
+  margin-top: 8px;
+  color: var(--pink);
+}
+
+/* ===================== CAKE + CANDLES ===================== */
 .cake-container {
-    margin: 30px auto 10px;
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
+  margin: 20px auto 10px;
 }
 
 .pixel-cake {
-    position: relative;
-    width: 100px;
-    height: 80px;
-    animation: float 2s ease-in-out infinite;
+  position: relative;
+  width: 220px;
+  padding-top: 60px;
 }
 
-.candle-flame {
-    width: 12px;
-    height: 16px;
-    background: #ffcc00;
-    margin: 0 auto;
-    box-shadow: 0 0 10px #ff9900;
-    animation: flicker 0.3s infinite alternate;
+.candle-row {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  z-index: 3;
 }
 
-.cake-top {
-    width: 60px;
-    height: 20px;
-    background: #ffb3c1;
-    border: 4px solid #000;
-    margin: 0 auto;
+.candle {
+  width: 8px;
+  height: 34px;
+  background: repeating-linear-gradient(
+    var(--pink), var(--pink) 6px, #fff 6px, #fff 12px
+  );
+  border: 2px solid var(--border);
+  position: relative;
+  cursor: pointer;
 }
 
-.cake-middle {
-    width: 80px;
-    height: 20px;
-    background: #ff758f;
-    border: 4px solid #000;
-    margin: 0 auto;
-}
-
-.cake-bottom {
-    width: 100px;
-    height: 25px;
-    background: #c9184a;
-    border: 4px solid #000;
-    margin: 0 auto;
+.flame {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 18px;
+  background: var(--yellow);
+  clip-path: polygon(50% 0%, 90% 60%, 50% 100%, 10% 60%);
+  box-shadow: 0 0 8px 2px var(--yellow), 0 0 14px 4px var(--hot-pink);
+  animation: flicker 0.4s infinite alternate steps(3);
+  transition: opacity 0.15s;
 }
 
 @keyframes flicker {
-    0% { transform: scale(1); opacity: 0.9; }
-    100% { transform: scale(1.2); opacity: 1; }
+  0% { transform: translateX(-50%) scale(1) rotate(-3deg); }
+  100% { transform: translateX(-50%) scale(1.15) rotate(3deg); }
 }
 
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
+.candle.blown .flame {
+  opacity: 0;
+  pointer-events: none;
 }
 
-/* Photo Grid */
+.candle.blown::after {
+  content: "";
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  background: #cfcfcf;
+  border-radius: 50%;
+  opacity: 0;
+  animation: smoke-puff 0.9s ease-out forwards;
+}
+
+@keyframes smoke-puff {
+  0% { opacity: 0.9; transform: translate(-50%, 0) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -40px) scale(3); }
+}
+
+.cake-top {
+  width: 100%;
+  height: 26px;
+  background: var(--pink);
+  border: 3px solid var(--border);
+  border-bottom: none;
+  position: relative;
+  z-index: 2;
+}
+
+.cake-top::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg, transparent, transparent 14px, rgba(255,255,255,0.5) 14px, rgba(255,255,255,0.5) 20px
+  );
+}
+
+.cake-middle {
+  width: 100%;
+  height: 48px;
+  background: var(--purple);
+  border: 3px solid var(--border);
+  border-top: none;
+  border-bottom: none;
+  position: relative;
+  z-index: 1;
+}
+
+.cake-middle::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 14px
+  );
+}
+
+.cake-bottom {
+  width: 100%;
+  height: 40px;
+  background: var(--hot-pink);
+  border: 3px solid var(--border);
+  border-top: none;
+}
+
+.cake-plate {
+  width: 130%;
+  margin-left: -15%;
+  height: 12px;
+  background: var(--cyan);
+  border: 3px solid var(--border);
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.4);
+}
+
+/* ===================== GALLERY ===================== */
+.gallery-wrap {
+  padding: 20px 16px 60px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.gallery-section {
+  margin-bottom: 40px;
+}
+
+.gallery-section h2 {
+  font-size: 0.9rem;
+  color: var(--yellow);
+  text-shadow: 2px 2px 0 var(--purple);
+  margin-bottom: 20px;
+}
+
 .photo-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    max-width: 900px;
-    margin: 20px auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
 }
 
 .pixel-frame {
-    background: #fff;
-    padding: 10px;
-    border: 4px solid var(--pixel-border);
-    box-shadow: 4px 4px 0px #ff69b4, 8px 8px 0px #00ced1;
-    cursor: pointer;
-    transition: transform 0.2s;
+  border: 4px solid var(--border);
+  background: var(--panel);
+  box-shadow: 6px 6px 0 rgba(0,0,0,0.5);
+  padding: 6px;
+  cursor: pointer;
+  transition: transform 0.15s;
 }
 
 .pixel-frame:hover {
-    transform: scale(1.04);
+  transform: translate(-3px, -3px);
+  box-shadow: 9px 9px 0 rgba(0,0,0,0.5);
 }
 
 .pixel-frame img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    image-rendering: pixelated;
-    display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+  filter: contrast(1.05) saturate(1.1);
 }
 
-/* Modal Popup */
+/* ===================== MODAL ===================== */
 .modal {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background: rgba(0, 0, 0, 0.75);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10000;
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 6, 20, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
 }
 
-.pixel-frame-modal {
-    background: #fff;
-    border: 4px solid #000;
-    box-shadow: 8px 8px 0px #ff69b4;
-    padding: 20px;
-    max-width: 500px;
-    width: 85%;
-    position: relative;
+.modal-content {
+  background: var(--panel);
+  border: 4px solid var(--border);
+  box-shadow: 8px 8px 0 rgba(0,0,0,0.6);
+  max-width: 420px;
+  width: 100%;
+  padding: 16px;
+  position: relative;
+  text-align: center;
 }
 
-.pixel-frame-modal img {
-    width: 100%;
-    max-height: 350px;
-    object-fit: contain;
-    border: 2px solid #000;
-}
-
-.close-btn {
-    position: absolute;
-    top: 5px; right: 12px;
-    font-size: 24px;
-    cursor: pointer;
+.modal-content img {
+  width: 100%;
+  border: 3px solid var(--border);
+  margin-bottom: 14px;
 }
 
 #modal-msg {
-    margin-top: 15px;
-    font-size: 12px;
-    line-height: 1.6;
+  font-size: 0.65rem;
+  line-height: 1.8;
+  color: var(--cyan);
 }
 
-#petal-canvas {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    pointer-events: none;
-    z-index: 9999;
+.close-btn {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  width: 32px;
+  height: 32px;
+  background: var(--hot-pink);
+  border: 3px solid var(--border);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 480px) {
+  .pixel-title { padding-top: 20px; }
+  .pixel-cake { width: 180px; }
+  .candle { height: 26px; }
 }

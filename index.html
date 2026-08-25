@@ -1,89 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday!</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday!</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <!-- PRE-BIRTHDAY VIEW: Shown until Sept 6th -->
-    <div id="pre-birthday-view">
-        <h1 class="pixel-title">COUNTDOWN TO THE BIG DAY</h1>
-        
-        <!-- Interactive Clickable Candles -->
-        <p class="sub-instruction">(Click the flames to blow out the candles!)</p>
-        <div id="candle-box" class="candle-container">
-            <div class="candle"><div class="flame"></div></div>
-            <div class="candle"><div class="flame"></div></div>
-            <div class="candle"><div class="flame"></div></div>
-            <div class="candle"><div class="flame"></div></div>
-            <div class="candle"><div class="flame"></div></div>
-            <div class="candle"><div class="flame"></div></div>
-        </div>
+<!-- Fullscreen canvas for confetti + petal explosion, sits above everything -->
+<canvas id="fx-canvas"></canvas>
 
-        <!-- Generic Time Display -->
-        <div id="timer-display" class="timer-box">
-            <div class="time-card"><span id="days">00</span><label>DAYS</label></div>
-            <div class="time-card"><span id="hours">00</span><label>HOURS</label></div>
-            <div class="time-card"><span id="mins">00</span><label>MINS</label></div>
-            <div class="time-card"><span id="secs">00</span><label>SECS</label></div>
-        </div>
+<!-- PRE-BIRTHDAY VIEW: Shown until Sept 6th -->
+<div id="pre-birthday-view">
+  <h1 class="pixel-title">COUNTDOWN TO THE BIG DAY</h1>
+  <p class="sub-instruction">something pixelated this way comes...</p>
+
+  <div id="timer-display" class="timer-box">
+    <div class="time-card"><span id="days">00</span><label>DAYS</label></div>
+    <div class="time-card"><span id="hours">00</span><label>HOURS</label></div>
+    <div class="time-card"><span id="mins">00</span><label>MINS</label></div>
+    <div class="time-card"><span id="secs">00</span><label>SECS</label></div>
+  </div>
+
+  <div class="pixel-heart">&#9829;</div>
+</div>
+
+<!-- POST-BIRTHDAY VIEW: Unlocks on Sept 6th -->
+<div id="post-birthday-view" class="hidden">
+
+  <h1 class="pixel-title reveal-title">IT'S YOUR DAY!</h1>
+  <p class="sub-instruction" id="candle-instruction">(Click every flame to blow out the candles &amp; make a wish!)</p>
+
+  <!-- Animated Pixel Cake with clickable candles -->
+  <div class="cake-container">
+    <div class="pixel-cake">
+      <div class="candle-row" id="candle-row">
+        <div class="candle"><div class="flame"></div></div>
+        <div class="candle"><div class="flame"></div></div>
+        <div class="candle"><div class="flame"></div></div>
+        <div class="candle"><div class="flame"></div></div>
+        <div class="candle"><div class="flame"></div></div>
+        <div class="candle"><div class="flame"></div></div>
+      </div>
+      <div class="cake-top"></div>
+      <div class="cake-middle"></div>
+      <div class="cake-bottom"></div>
+      <div class="cake-plate"></div>
     </div>
+  </div>
 
-    <!-- POST-BIRTHDAY VIEW: Unlocks on Sept 6th -->
-    <div id="post-birthday-view" class="hidden">
-        
-        <!-- Animated Pixel Cake -->
-        <div class="cake-container">
-            <div class="pixel-cake">
-                <div class="candle-flame"></div>
-                <div class="cake-top"></div>
-                <div class="cake-middle"></div>
-                <div class="cake-bottom"></div>
-            </div>
-        </div>
+  <h1 class="pixel-title main-hbd hidden" id="main-hbd-title">HAPPY BIRTHDAY!</h1>
 
-        <h1 class="pixel-title main-hbd">HAPPY BIRTHDAY!</h1>
+  <main id="gallery-wrap" class="gallery-wrap hidden">
+    <section class="gallery-section">
+      <h2>Level 1: The Early Years</h2>
+      <div class="photo-grid">
+        <div class="pixel-frame" data-message="Message for Kid Photo 1 goes here!"><img src="./photos/kid1.jpg" alt="Kid Photo 1"></div>
+        <div class="pixel-frame" data-message="Message for Kid Photo 2 goes here!"><img src="./photos/kid2.jpg" alt="Kid Photo 2"></div>
+        <div class="pixel-frame" data-message="Message for Kid Photo 3 goes here!"><img src="./photos/kid3.jpg" alt="Kid Photo 3"></div>
+        <div class="pixel-frame" data-message="Message for Kid Photo 4 goes here!"><img src="./photos/kid4.jpg" alt="Kid Photo 4"></div>
+        <div class="pixel-frame" data-message="Message for Kid Photo 5 goes here!"><img src="./photos/kid5.jpg" alt="Kid Photo 5"></div>
+        <div class="pixel-frame" data-message="Message for Kid Photo 6 goes here!"><img src="./photos/kid6.jpg" alt="Kid Photo 6"></div>
+      </div>
+    </section>
 
-        <main>
-            <section class="gallery-section">
-                <h2>Level 1: The Early Years</h2>
-                <div class="photo-grid">
-                    <div class="pixel-frame" data-message="Message for Kid Photo 1 goes here!"><img src="./photos/kid1.jpg" alt="Kid Photo 1"></div>
-                    <div class="pixel-frame" data-message="Message for Kid Photo 2 goes here!"><img src="./photos/kid2.jpg" alt="Kid Photo 2"></div>
-                    <div class="pixel-frame" data-message="Message for Kid Photo 3 goes here!"><img src="./photos/kid3.jpg" alt="Kid Photo 3"></div>
-                    <div class="pixel-frame" data-message="Message for Kid Photo 4 goes here!"><img src="./photos/kid4.jpg" alt="Kid Photo 4"></div>
-                    <div class="pixel-frame" data-message="Message for Kid Photo 5 goes here!"><img src="./photos/kid5.jpg" alt="Kid Photo 5"></div>
-                    <div class="pixel-frame" data-message="Message for Kid Photo 6 goes here!"><img src="./photos/kid6.jpg" alt="Kid Photo 6"></div>
-                </div>
-            </section>
+    <section class="gallery-section">
+      <h2>Level Up: Current Stats</h2>
+      <div class="photo-grid">
+        <div class="pixel-frame" data-message="Message for Adult Photo 1 goes here!"><img src="./photos/adult1.jpg" alt="Adult Photo 1"></div>
+        <div class="pixel-frame" data-message="Message for Adult Photo 2 goes here!"><img src="./photos/adult2.jpg" alt="Adult Photo 2"></div>
+        <div class="pixel-frame" data-message="Message for Adult Photo 3 goes here!"><img src="./photos/adult3.jpg" alt="Adult Photo 3"></div>
+        <div class="pixel-frame" data-message="Message for Adult Photo 4 goes here!"><img src="./photos/adult4.jpg" alt="Adult Photo 4"></div>
+        <div class="pixel-frame" data-message="Message for Adult Photo 5 goes here!"><img src="./photos/adult5.jpg" alt="Adult Photo 5"></div>
+        <div class="pixel-frame" data-message="Message for Adult Photo 6 goes here!"><img src="./photos/adult6.jpg" alt="Adult Photo 6"></div>
+      </div>
+    </section>
+  </main>
+</div>
 
-            <section class="gallery-section">
-                <h2>Level Up: Current Stats</h2>
-                <div class="photo-grid">
-                    <div class="pixel-frame" data-message="Message for Adult Photo 1 goes here!"><img src="./photos/adult1.jpg" alt="Adult Photo 1"></div>
-                    <div class="pixel-frame" data-message="Message for Adult Photo 2 goes here!"><img src="./photos/adult2.jpg" alt="Adult Photo 2"></div>
-                    <div class="pixel-frame" data-message="Message for Adult Photo 3 goes here!"><img src="./photos/adult3.jpg" alt="Adult Photo 3"></div>
-                    <div class="pixel-frame" data-message="Message for Adult Photo 4 goes here!"><img src="./photos/adult4.jpg" alt="Adult Photo 4"></div>
-                    <div class="pixel-frame" data-message="Message for Adult Photo 5 goes here!"><img src="./photos/adult5.jpg" alt="Adult Photo 5"></div>
-                    <div class="pixel-frame" data-message="Message for Adult Photo 6 goes here!"><img src="./photos/adult6.jpg" alt="Adult Photo 6"></div>
-                </div>
-            </section>
-        </main>
-    </div>
+<!-- Interactive Photo Click Popup Modal -->
+<div id="photo-modal" class="modal hidden">
+  <div class="modal-content pixel-frame-modal">
+    <span class="close-btn">&times;</span>
+    <img id="modal-img" src="" alt="Expanded View">
+    <p id="modal-msg">Message goes here...</p>
+  </div>
+</div>
 
-    <!-- Interactive Photo Click Popup Modal -->
-    <div id="photo-modal" class="modal hidden">
-        <div class="modal-content pixel-frame-modal">
-            <span class="close-btn">&times;</span>
-            <img id="modal-img" src="" alt="Expanded View">
-            <p id="modal-msg">Message goes here...</p>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

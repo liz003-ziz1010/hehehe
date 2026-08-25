@@ -1,140 +1,196 @@
-// SETTINGS
-const forceTest = false; // Set to TRUE to preview Sept 6th birthday reveal immediately!
+// ===================== CONFIG =====================
+// Birthday target date — change the year if needed.
+const BIRTHDAY_DATE = new Date('2026-09-06T00:00:00');
 
-const targetDate = new Date("September 6, 2026 00:00:00").getTime();
+// ===================== ELEMENTS =====================
+const preView = document.getElementById('pre-birthday-view');
+const postView = document.getElementById('post-birthday-view');
 
-document.addEventListener("DOMContentLoaded", () => {
-    checkDateAndInit();
-    setupPhotoModals();
+const daysEl = document.getElementById('days');
+const hoursEl = document.getElementById('hours');
+const minsEl = document.getElementById('mins');
+const secsEl = document.getElementById('secs');
+
+const candles = Array.from(document.querySelectorAll('.candle'));
+const candleInstruction = document.getElementById('candle-instruction');
+const mainHbdTitle = document.getElementById('main-hbd-title');
+const galleryWrap = document.getElementById('gallery-wrap');
+
+const modal = document.getElementById('photo-modal');
+const modalImg = document.getElementById('modal-img');
+const modalMsg = document.getElementById('modal-msg');
+const closeBtn = document.querySelector('.close-btn');
+
+const canvas = document.getElementById('fx-canvas');
+const ctx = canvas.getContext('2d');
+
+// ===================== COUNTDOWN =====================
+function updateCountdown() {
+  const now = new Date();
+  const diff = BIRTHDAY_DATE - now;
+
+  if (diff <= 0) {
+    preView.classList.add('hidden');
+    postView.classList.remove('hidden');
+    clearInterval(countdownTimer);
+    return;
+  }
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const mins = Math.floor((diff / (1000 * 60)) % 60);
+  const secs = Math.floor((diff / 1000) % 60);
+
+  daysEl.textContent = String(days).padStart(2, '0');
+  hoursEl.textContent = String(hours).padStart(2, '0');
+  minsEl.textContent = String(mins).padStart(2, '0');
+  secsEl.textContent = String(secs).padStart(2, '0');
+}
+
+updateCountdown();
+const countdownTimer = setInterval(updateCountdown, 1000);
+
+// If we're already past the birthday on load, jump straight to reveal view.
+if (new Date() >= BIRTHDAY_DATE) {
+  preView.classList.add('hidden');
+  postView.classList.remove('hidden');
+}
+
+// ===================== CANDLE BLOW-OUT =====================
+let blownCount = 0;
+let celebrated = false;
+
+candles.forEach((candle) => {
+  candle.addEventListener('click', () => {
+    if (candle.classList.contains('blown')) return;
+    candle.classList.add('blown');
+    blownCount++;
+
+    if (blownCount === candles.length && !celebrated) {
+      celebrated = true;
+      candleInstruction.textContent = 'Wish made. Happy Birthday!';
+      setTimeout(celebrate, 250);
+    }
+  });
 });
 
-function checkDateAndInit() {
-    const now = new Date().getTime();
-    const isBirthday = (now >= targetDate) || forceTest;
+function celebrate() {
+  mainHbdTitle.classList.remove('hidden');
+  galleryWrap.classList.remove('hidden');
+  burstConfettiAndPetals();
+  // A second smaller burst for extra sparkle
+  setTimeout(burstConfettiAndPetals, 700);
+}
 
-    const preView = document.getElementById("pre-birthday-view");
-    const postView = document.getElementById("post-birthday-view");
+// ===================== PHOTO MODAL =====================
+document.querySelectorAll('.pixel-frame').forEach((frame) => {
+  frame.addEventListener('click', () => {
+    const img = frame.querySelector('img');
+    modalImg.src = img.src;
+    modalImg.alt = img.alt;
+    modalMsg.textContent = frame.getAttribute('data-message') || '';
+    modal.classList.remove('hidden');
+  });
+});
 
-    if (isBirthday) {
-        preView.classList.add("hidden");
-        postView.classList.remove("hidden");
-        triggerPetalsAndConfetti();
+closeBtn.addEventListener('click', () => modal.classList.add('hidden'));
+modal.addEventListener('click', (e) => {
+  if (e.target === modal) modal.classList.add('hidden');
+});
+
+// ===================== CONFETTI + FLOWER PETAL PARTICLE SYSTEM =====================
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+const CONFETTI_COLORS = ['#ff6fb0', '#6ff0ff', '#ffe15a', '#9b5de5', '#ff3b9a', '#ffffff'];
+const PETAL_COLORS = ['#ff8fa3', '#ff6fb0', '#ffd6e0', '#ff3b9a', '#ffffff'];
+
+let particles = [];
+let animating = false;
+
+class Particle {
+  constructor(type) {
+    this.type = type; // 'confetti' or 'petal'
+    this.x = canvas.width / 2 + (Math.random() - 0.5) * 60;
+    this.y = canvas.height * 0.4 + (Math.random() - 0.5) * 40;
+
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 4 + Math.random() * 9;
+    this.vx = Math.cos(angle) * speed;
+    this.vy = Math.sin(angle) * speed - 4;
+
+    this.size = type === 'confetti' ? 5 + Math.random() * 5 : 8 + Math.random() * 6;
+    this.color = type === 'confetti'
+      ? CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)]
+      : PETAL_COLORS[Math.floor(Math.random() * PETAL_COLORS.length)];
+
+    this.rotation = Math.random() * 360;
+    this.rotSpeed = (Math.random() - 0.5) * 12;
+    this.gravity = type === 'confetti' ? 0.22 : 0.09;
+    this.drag = type === 'confetti' ? 0.995 : 0.98;
+    this.life = 1;
+    this.decay = 0.004 + Math.random() * 0.004;
+    this.wobble = Math.random() * Math.PI * 2;
+  }
+
+  update() {
+    this.vx *= this.drag;
+    this.vy = this.vy * this.drag + this.gravity;
+    if (this.type === 'petal') {
+      this.wobble += 0.08;
+      this.x += Math.sin(this.wobble) * 0.6;
+    }
+    this.x += this.vx;
+    this.y += this.vy;
+    this.rotation += this.rotSpeed;
+    this.life -= this.decay;
+  }
+
+  draw() {
+    if (this.life <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = Math.max(this.life, 0);
+    ctx.translate(this.x, this.y);
+    ctx.rotate((this.rotation * Math.PI) / 180);
+    ctx.fillStyle = this.color;
+
+    if (this.type === 'confetti') {
+      // pixel-style square
+      ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
     } else {
-        preView.classList.remove("hidden");
-        postView.classList.add("hidden");
-        updateCandleCountdown();
-        setInterval(updateCandleCountdown, 60000);
+      // simple pixelated petal (small rounded-ish rect pair to fake a petal)
+      ctx.fillRect(-this.size / 2, -this.size / 4, this.size, this.size / 2);
+      ctx.fillRect(-this.size / 4, -this.size / 2, this.size / 2, this.size);
     }
+    ctx.restore();
+  }
 }
 
-// COUNTDOWN FUNCTION
-function updateCandleCountdown() {
-    const now = new Date().getTime();
-    const distance = targetDate - now;
-
-    if (distance < 0) {
-        checkDateAndInit();
-        return;
-    }
-
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-
-    const timeString = `${days.toString().padStart(2, '0')}${hours.toString().padStart(2, '0')}${minutes.toString().padStart(2, '0')}`;
-
-    const countdownHTML = timeString.split('').map(digit => {
-        return `<img src="./assets/candle-${digit}.png" alt="${digit}" class="candle-digit">`;
-    }).join('');
-
-    document.getElementById("candle-countdown").innerHTML = countdownHTML;
+function burstConfettiAndPetals() {
+  for (let i = 0; i < 90; i++) particles.push(new Particle('confetti'));
+  for (let i = 0; i < 50; i++) particles.push(new Particle('petal'));
+  if (!animating) {
+    animating = true;
+    requestAnimationFrame(animateParticles);
+  }
 }
 
-// PHOTO POPUP MODAL LOGIC
-function setupPhotoModals() {
-    const modal = document.getElementById("photo-modal");
-    const modalImg = document.getElementById("modal-img");
-    const modalMsg = document.getElementById("modal-msg");
-    const closeBtn = document.querySelector(".close-btn");
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach((p) => {
+    p.update();
+    p.draw();
+  });
+  particles = particles.filter((p) => p.life > 0 && p.y < canvas.height + 50);
 
-    document.querySelectorAll(".pixel-frame").forEach(frame => {
-        frame.addEventListener("click", () => {
-            const img = frame.querySelector("img");
-            const msg = frame.getAttribute("data-message");
-
-            modalImg.src = img.src;
-            modalMsg.textContent = msg;
-            modal.classList.remove("hidden");
-        });
-    });
-
-    closeBtn.addEventListener("click", () => modal.classList.add("hidden"));
-    modal.addEventListener("click", (e) => {
-        if (e.target === modal) modal.classList.add("hidden");
-    });
-}
-
-// PETALS + CONFETTI EXPLOSION
-function triggerPetalsAndConfetti() {
-    const canvas = document.createElement('canvas');
-    canvas.id = 'petal-canvas';
-    document.body.appendChild(canvas);
-    const ctx = canvas.getContext('2d');
-
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
-
-    const colors = ['#ff4d6d', '#ff758f', '#ffb3c1', '#00ced1', '#ffd166', '#06d6a0'];
-    const particles = [];
-    const total = 160;
-
-    for (let i = 0; i < total; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * 14 + 4;
-        particles.push({
-            x: width / 2,
-            y: height / 2,
-            vx: Math.cos(angle) * speed,
-            vy: Math.sin(angle) * speed - 4,
-            size: Math.floor(Math.random() * 6) + 4,
-            color: colors[Math.floor(Math.random() * colors.length)],
-            rotation: Math.random() * Math.PI,
-            vRot: (Math.random() - 0.5) * 0.1,
-            gravity: 0.15,
-            drag: 0.97,
-            opacity: 1
-        });
-    }
-
-    function animate() {
-        ctx.clearRect(0, 0, width, height);
-        let active = 0;
-
-        particles.forEach(p => {
-            if (p.opacity <= 0) return;
-            active++;
-
-            p.vx *= p.drag;
-            p.vy *= p.drag;
-            p.vy += p.gravity;
-            p.x += p.vx + Math.sin(p.y * 0.02);
-            p.y += p.vy;
-            p.rotation += p.vRot;
-
-            if (p.y > height * 0.7) p.opacity -= 0.008;
-
-            ctx.save();
-            ctx.globalAlpha = Math.max(0, p.opacity);
-            ctx.translate(p.x, p.y);
-            ctx.rotate(p.rotation);
-            ctx.fillStyle = p.color;
-            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
-            ctx.restore();
-        });
-
-        if (active > 0) requestAnimationFrame(animate);
-        else canvas.remove();
-    }
-
-    animate();
+  if (particles.length > 0) {
+    requestAnimationFrame(animateParticles);
+  } else {
+    animating = false;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
 }
