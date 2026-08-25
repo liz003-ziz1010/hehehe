@@ -12,14 +12,12 @@ const minsEl = document.getElementById('mins');
 const secsEl = document.getElementById('secs');
 
 const candles = Array.from(document.querySelectorAll('.candle'));
+const cakeContainer = document.querySelector('.cake-container');
 const candleInstruction = document.getElementById('candle-instruction');
 const mainHbdTitle = document.getElementById('main-hbd-title');
+const bouquet = document.getElementById('bouquet');
 const galleryWrap = document.getElementById('gallery-wrap');
-
-const modal = document.getElementById('photo-modal');
-const modalImg = document.getElementById('modal-img');
-const modalMsg = document.getElementById('modal-msg');
-const closeBtn = document.querySelector('.close-btn');
+const screenFlash = document.getElementById('screen-flash');
 
 const canvas = document.getElementById('fx-canvas');
 const ctx = canvas.getContext('2d');
@@ -68,37 +66,48 @@ candles.forEach((candle) => {
 
     if (blownCount === candles.length && !celebrated) {
       celebrated = true;
-      candleInstruction.textContent = 'Wish made. Happy Birthday!';
-      setTimeout(celebrate, 250);
+      candleInstruction.textContent = 'Wish made...';
+      setTimeout(startDramaticReveal, 350);
     }
   });
 });
 
-function celebrate() {
-  mainHbdTitle.classList.remove('hidden');
-  galleryWrap.classList.remove('hidden');
-  burstConfettiAndPetals();
-  // A second smaller burst for extra sparkle
-  setTimeout(burstConfettiAndPetals, 700);
+// ===================== DRAMATIC REVEAL SEQUENCE =====================
+function startDramaticReveal() {
+  // 1. Build-up: shake the cake, then flash the whole screen
+  cakeContainer.classList.add('shake');
+  setTimeout(() => cakeContainer.classList.remove('shake'), 550);
+
+  setTimeout(() => {
+    screenFlash.classList.add('active');
+    setTimeout(() => screenFlash.classList.remove('active'), 650);
+  }, 250);
+
+  // 2. Reveal title, bouquet and galleries just after the flash peaks
+  setTimeout(() => {
+    candleInstruction.textContent = 'Happy Birthday!';
+    mainHbdTitle.classList.remove('hidden');
+    bouquet.classList.remove('hidden');
+    bouquet.classList.add('show');
+    galleryWrap.classList.remove('hidden');
+
+    // 3. Multiple staggered explosion waves for a bigger, longer celebration
+    burstFX(true);
+    setTimeout(() => burstFX(false), 450);
+    setTimeout(() => burstFX(false), 950);
+    setTimeout(() => burstFX(false), 1550);
+    setTimeout(() => burstFX(false), 2300);
+  }, 500);
 }
 
-// ===================== PHOTO MODAL =====================
-document.querySelectorAll('.pixel-frame').forEach((frame) => {
-  frame.addEventListener('click', () => {
-    const img = frame.querySelector('img');
-    modalImg.src = img.src;
-    modalImg.alt = img.alt;
-    modalMsg.textContent = frame.getAttribute('data-message') || '';
-    modal.classList.remove('hidden');
+// ===================== PHOTO FLIP CARDS =====================
+document.querySelectorAll('.flip-inner').forEach((inner) => {
+  inner.parentElement.addEventListener('click', () => {
+    inner.classList.toggle('flipped');
   });
 });
 
-closeBtn.addEventListener('click', () => modal.classList.add('hidden'));
-modal.addEventListener('click', (e) => {
-  if (e.target === modal) modal.classList.add('hidden');
-});
-
-// ===================== CONFETTI + FLOWER PETAL PARTICLE SYSTEM =====================
+// ===================== CONFETTI + PETAL + SPARKLE PARTICLE SYSTEM =====================
 function resizeCanvas() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -108,33 +117,40 @@ window.addEventListener('resize', resizeCanvas);
 
 const CONFETTI_COLORS = ['#ff6fb0', '#6ff0ff', '#ffe15a', '#9b5de5', '#ff3b9a', '#ffffff'];
 const PETAL_COLORS = ['#ff8fa3', '#ff6fb0', '#ffd6e0', '#ff3b9a', '#ffffff'];
+const SPARK_COLORS = ['#ffffff', '#ffe15a', '#6ff0ff'];
 
 let particles = [];
 let animating = false;
 
 class Particle {
-  constructor(type) {
-    this.type = type; // 'confetti' or 'petal'
-    this.x = canvas.width / 2 + (Math.random() - 0.5) * 60;
-    this.y = canvas.height * 0.4 + (Math.random() - 0.5) * 40;
+  constructor(type, big) {
+    this.type = type; // 'confetti' | 'petal' | 'spark'
+    const originX = canvas.width / 2 + (Math.random() - 0.5) * (big ? 140 : 70);
+    const originY = canvas.height * 0.42 + (Math.random() - 0.5) * 60;
+    this.x = originX;
+    this.y = originY;
 
     const angle = Math.random() * Math.PI * 2;
-    const speed = 4 + Math.random() * 9;
+    const baseSpeed = type === 'spark' ? 3 : 5;
+    const speed = baseSpeed + Math.random() * (big ? 13 : 9);
     this.vx = Math.cos(angle) * speed;
-    this.vy = Math.sin(angle) * speed - 4;
+    this.vy = Math.sin(angle) * speed - (big ? 6 : 4);
 
-    this.size = type === 'confetti' ? 5 + Math.random() * 5 : 8 + Math.random() * 6;
-    this.color = type === 'confetti'
-      ? CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)]
-      : PETAL_COLORS[Math.floor(Math.random() * PETAL_COLORS.length)];
+    if (type === 'confetti') this.size = 5 + Math.random() * 6;
+    else if (type === 'petal') this.size = 8 + Math.random() * 7;
+    else this.size = 3 + Math.random() * 3;
+
+    const palette = type === 'confetti' ? CONFETTI_COLORS : type === 'petal' ? PETAL_COLORS : SPARK_COLORS;
+    this.color = palette[Math.floor(Math.random() * palette.length)];
 
     this.rotation = Math.random() * 360;
-    this.rotSpeed = (Math.random() - 0.5) * 12;
-    this.gravity = type === 'confetti' ? 0.22 : 0.09;
-    this.drag = type === 'confetti' ? 0.995 : 0.98;
+    this.rotSpeed = (Math.random() - 0.5) * 14;
+    this.gravity = type === 'confetti' ? 0.24 : type === 'petal' ? 0.09 : 0.05;
+    this.drag = type === 'confetti' ? 0.994 : type === 'petal' ? 0.98 : 0.985;
     this.life = 1;
-    this.decay = 0.004 + Math.random() * 0.004;
+    this.decay = type === 'spark' ? 0.012 + Math.random() * 0.01 : 0.0035 + Math.random() * 0.0035;
     this.wobble = Math.random() * Math.PI * 2;
+    this.twinkle = Math.random() * Math.PI * 2;
   }
 
   update() {
@@ -142,7 +158,10 @@ class Particle {
     this.vy = this.vy * this.drag + this.gravity;
     if (this.type === 'petal') {
       this.wobble += 0.08;
-      this.x += Math.sin(this.wobble) * 0.6;
+      this.x += Math.sin(this.wobble) * 0.7;
+    }
+    if (this.type === 'spark') {
+      this.twinkle += 0.3;
     }
     this.x += this.vx;
     this.y += this.vy;
@@ -153,26 +172,34 @@ class Particle {
   draw() {
     if (this.life <= 0) return;
     ctx.save();
-    ctx.globalAlpha = Math.max(this.life, 0);
     ctx.translate(this.x, this.y);
     ctx.rotate((this.rotation * Math.PI) / 180);
     ctx.fillStyle = this.color;
 
     if (this.type === 'confetti') {
-      // pixel-style square
+      ctx.globalAlpha = Math.max(this.life, 0);
       ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
-    } else {
-      // simple pixelated petal (small rounded-ish rect pair to fake a petal)
+    } else if (this.type === 'petal') {
+      ctx.globalAlpha = Math.max(this.life, 0);
       ctx.fillRect(-this.size / 2, -this.size / 4, this.size, this.size / 2);
       ctx.fillRect(-this.size / 4, -this.size / 2, this.size / 2, this.size);
+    } else {
+      ctx.globalAlpha = Math.max(this.life * (0.5 + 0.5 * Math.sin(this.twinkle)), 0);
+      ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
     }
     ctx.restore();
   }
 }
 
-function burstConfettiAndPetals() {
-  for (let i = 0; i < 90; i++) particles.push(new Particle('confetti'));
-  for (let i = 0; i < 50; i++) particles.push(new Particle('petal'));
+function burstFX(big) {
+  const confettiCount = big ? 160 : 60;
+  const petalCount = big ? 90 : 34;
+  const sparkCount = big ? 70 : 26;
+
+  for (let i = 0; i < confettiCount; i++) particles.push(new Particle('confetti', big));
+  for (let i = 0; i < petalCount; i++) particles.push(new Particle('petal', big));
+  for (let i = 0; i < sparkCount; i++) particles.push(new Particle('spark', big));
+
   if (!animating) {
     animating = true;
     requestAnimationFrame(animateParticles);
@@ -185,7 +212,7 @@ function animateParticles() {
     p.update();
     p.draw();
   });
-  particles = particles.filter((p) => p.life > 0 && p.y < canvas.height + 50);
+  particles = particles.filter((p) => p.life > 0 && p.y < canvas.height + 60);
 
   if (particles.length > 0) {
     requestAnimationFrame(animateParticles);

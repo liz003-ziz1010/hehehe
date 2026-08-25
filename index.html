@@ -12,6 +12,9 @@
 <!-- Fullscreen canvas for confetti + petal explosion, sits above everything -->
 <canvas id="fx-canvas"></canvas>
 
+<!-- Camera-flash overlay for the big reveal moment -->
+<div id="screen-flash"></div>
+
 <!-- PRE-BIRTHDAY VIEW: Shown until Sept 6th -->
 <div id="pre-birthday-view">
   <h1 class="pixel-title">COUNTDOWN TO THE BIG DAY</h1>
@@ -53,41 +56,79 @@
 
   <h1 class="pixel-title main-hbd hidden" id="main-hbd-title">HAPPY BIRTHDAY!</h1>
 
+  <!-- Pixel rose bouquet, blooms in during the reveal -->
+  <div class="bouquet hidden" id="bouquet">
+    <span class="rose r1">&#127801;</span>
+    <span class="rose r2">&#127801;</span>
+    <span class="rose r3">&#127801;</span>
+    <span class="leaf l1">&#127807;</span>
+    <span class="leaf l2">&#127807;</span>
+    <span class="ribbon">&#127183;</span>
+  </div>
+
   <main id="gallery-wrap" class="gallery-wrap hidden">
     <section class="gallery-section">
       <h2>Level 1: The Early Years</h2>
       <div class="photo-grid">
-        <div class="pixel-frame" data-message="Cutu Omer, you'll always be the cutest to me"><img src="./photos/kid1.jpg" alt="Kid Photo 1"></div>
-        <div class="pixel-frame" data-message="Always keep smiling as widely as this"><img src="./photos/kid2.jpg" alt="Kid Photo 2"></div>
-        <div class="pixel-frame" data-message="Hope always good and exciting things will come to you"><img src="./photos/kid3.jpg" alt="Kid Photo 3"></div>
-        <div class="pixel-frame" data-message="Message for Kid Photo 4 goes here!"><img src="./photos/kid4.jpg" alt="Kid Photo 4"></div>
-        <div class="pixel-frame" data-message="Message for Kid Photo 5 goes here!"><img src="./photos/kid5.jpg" alt="Kid Photo 5"></div>
-        <div class="pixel-frame" data-message="Message for Kid Photo 6 goes here!"><img src="./photos/kid6.jpg" alt="Kid Photo 6"></div>
+        <div class="pixel-frame flip-card"><div class="flip-inner">
+          <div class="flip-front"><img src="./photos/kid1.jpg" alt="Kid Photo 1"></div>
+          <div class="flip-back"><p>Message for Kid Photo 1 goes here!</p></div>
+        </div></div>
+        <div class="pixel-frame flip-card"><div class="flip-inner">
+          <div class="flip-front"><img src="./photos/kid2.jpg" alt="Kid Photo 2"></div>
+          <div class="flip-back"><p>Message for Kid Photo 2 goes here!</p></div>
+        </div></div>
+        <div class="pixel-frame flip-card"><div class="flip-inner">
+          <div class="flip-front"><img src="./photos/kid3.jpg" alt="Kid Photo 3"></div>
+          <div class="flip-back"><p>Message for Kid Photo 3 goes here!</p></div>
+        </div></div>
+        <div class="pixel-frame flip-card"><div class="flip-inner">
+          <div class="flip-front"><img src="./photos/kid4.jpg" alt="Kid Photo 4"></div>
+          <div class="flip-back"><p>Message for Kid Photo 4 goes here!</p></div>
+        </div></div>
+        <div class="pixel-frame flip-card"><div class="flip-inner">
+          <div class="flip-front"><img src="./photos/kid5.jpg" alt="Kid Photo 5"></div>
+          <div class="flip-back"><p>Message for Kid Photo 5 goes here!</p></div>
+        </div></div>
+        <div class="pixel-frame flip-card"><div class="flip-inner">
+          <div class="flip-front"><img src="./photos/kid6.jpg" alt="Kid Photo 6"></div>
+          <div class="flip-back"><p>Message for Kid Photo 6 goes here!</p></div>
+        </div></div>
       </div>
     </section>
 
     <section class="gallery-section">
       <h2>Level Up: Current Stats</h2>
       <div class="photo-grid">
-        <div class="pixel-frame" data-message="Message for Adult Photo 1 goes here!"><img src="./photos/adult1.jpg" alt="Adult Photo 1"></div>
-        <div class="pixel-frame" data-message="Message for Adult Photo 2 goes here!"><img src="./photos/adult2.jpg" alt="Adult Photo 2"></div>
-        <div class="pixel-frame" data-message="Message for Adult Photo 3 goes here!"><img src="./photos/adult3.jpg" alt="Adult Photo 3"></div>
-        <div class="pixel-frame" data-message="Message for Adult Photo 4 goes here!"><img src="./photos/adult4.jpg" alt="Adult Photo 4"></div>
-        <div class="pixel-frame" data-message="Message for Adult Photo 5 goes here!"><img src="./photos/adult5.jpg" alt="Adult Photo 5"></div>
-        <div class="pixel-frame" data-message="Message for Adult Photo 6 goes here!"><img src="./photos/adult6.jpg" alt="Adult Photo 6"></div>
+        <div class="pixel-frame flip-card"><div class="flip-inner">
+          <div class="flip-front"><img src="./photos/adult1.jpg" alt="Adult Photo 1"></div>
+          <div class="flip-back"><p>Message for Adult Photo 1 goes here!</p></div>
+        </div></div>
+        <div class="pixel-frame flip-card"><div class="flip-inner">
+          <div class="flip-front"><img src="./photos/adult2.jpg" alt="Adult Photo 2"></div>
+          <div class="flip-back"><p>Message for Adult Photo 2 goes here!</p></div>
+        </div></div>
+        <div class="pixel-frame flip-card"><div class="flip-inner">
+          <div class="flip-front"><img src="./photos/adult3.jpg" alt="Adult Photo 3"></div>
+          <div class="flip-back"><p>Message for Adult Photo 3 goes here!</p></div>
+        </div></div>
+        <div class="pixel-frame flip-card"><div class="flip-inner">
+          <div class="flip-front"><img src="./photos/adult4.jpg" alt="Adult Photo 4"></div>
+          <div class="flip-back"><p>Message for Adult Photo 4 goes here!</p></div>
+        </div></div>
+        <div class="pixel-frame flip-card"><div class="flip-inner">
+          <div class="flip-front"><img src="./photos/adult5.jpg" alt="Adult Photo 5"></div>
+          <div class="flip-back"><p>Message for Adult Photo 5 goes here!</p></div>
+        </div></div>
+        <div class="pixel-frame flip-card"><div class="flip-inner">
+          <div class="flip-front"><img src="./photos/adult6.jpg" alt="Adult Photo 6"></div>
+          <div class="flip-back"><p>Message for Adult Photo 6 goes here!</p></div>
+        </div></div>
       </div>
     </section>
   </main>
 </div>
 
-<!-- Interactive Photo Click Popup Modal -->
-<div id="photo-modal" class="modal hidden">
-  <div class="modal-content pixel-frame-modal">
-    <span class="close-btn">&times;</span>
-    <img id="modal-img" src="" alt="Expanded View">
-    <p id="modal-msg">Message goes here...</p>
-  </div>
-</div>
 
 <script src="script.js"></script>
 </body>
