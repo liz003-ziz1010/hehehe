@@ -12,7 +12,25 @@
     <!-- PRE-BIRTHDAY VIEW: Shown until Sept 6th -->
     <div id="pre-birthday-view">
         <h1 class="pixel-title">COUNTDOWN TO THE BIG DAY</h1>
-        <div id="candle-countdown" class="countdown-container"></div>
+        
+        <!-- Interactive Clickable Candles -->
+        <p class="sub-instruction">(Click the flames to blow out the candles!)</p>
+        <div id="candle-box" class="candle-container">
+            <div class="candle"><div class="flame"></div></div>
+            <div class="candle"><div class="flame"></div></div>
+            <div class="candle"><div class="flame"></div></div>
+            <div class="candle"><div class="flame"></div></div>
+            <div class="candle"><div class="flame"></div></div>
+            <div class="candle"><div class="flame"></div></div>
+        </div>
+
+        <!-- Generic Time Display -->
+        <div id="timer-display" class="timer-box">
+            <div class="time-card"><span id="days">00</span><label>DAYS</label></div>
+            <div class="time-card"><span id="hours">00</span><label>HOURS</label></div>
+            <div class="time-card"><span id="mins">00</span><label>MINS</label></div>
+            <div class="time-card"><span id="secs">00</span><label>SECS</label></div>
+        </div>
     </div>
 
     <!-- POST-BIRTHDAY VIEW: Unlocks on Sept 6th -->
@@ -34,7 +52,6 @@
             <section class="gallery-section">
                 <h2>Level 1: The Early Years</h2>
                 <div class="photo-grid">
-                    <!-- Edit your custom popup messages in data-message="..." below -->
                     <div class="pixel-frame" data-message="Message for Kid Photo 1 goes here!"><img src="./photos/kid1.jpg" alt="Kid Photo 1"></div>
                     <div class="pixel-frame" data-message="Message for Kid Photo 2 goes here!"><img src="./photos/kid2.jpg" alt="Kid Photo 2"></div>
                     <div class="pixel-frame" data-message="Message for Kid Photo 3 goes here!"><img src="./photos/kid3.jpg" alt="Kid Photo 3"></div>
