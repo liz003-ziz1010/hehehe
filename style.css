@@ -1,5 +1,5 @@
 :root {
-    --bg-color: #fdf6e3; /* Cream background from your inspo */
+    --bg-color: #fdf6e3;
     --text-color: #333;
     --pixel-border: #000;
 }
@@ -13,54 +13,109 @@ body {
     padding: 20px;
 }
 
-header {
-    margin-bottom: 40px;
+.hidden {
+    display: none !important;
 }
 
-h1, h2 {
-    line-height: 1.5;
+#pre-birthday-view {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Candle Countdown Styling */
+/* Candle Countdown */
 .countdown-container {
     display: flex;
     justify-content: center;
     gap: 10px;
-    margin-top: 20px;
+    margin-top: 30px;
 }
 
 .candle-digit {
-    width: 40px; /* Adjust based on your actual cropped candle images */
+    width: 40px;
     height: auto;
-    image-rendering: pixelated; /* Keeps pixel art crisp */
+    image-rendering: pixelated;
 }
 
-/* Photo Gallery Grid */
-.gallery-section {
-    margin-bottom: 50px;
+/* Animated CSS Pixel Cake */
+.cake-container {
+    margin: 30px auto 10px;
+    display: flex;
+    justify-content: center;
 }
 
+.pixel-cake {
+    position: relative;
+    width: 100px;
+    height: 80px;
+    animation: float 2s ease-in-out infinite;
+}
+
+.candle-flame {
+    width: 12px;
+    height: 16px;
+    background: #ffcc00;
+    margin: 0 auto;
+    box-shadow: 0 0 10px #ff9900;
+    animation: flicker 0.3s infinite alternate;
+}
+
+.cake-top {
+    width: 60px;
+    height: 20px;
+    background: #ffb3c1;
+    border: 4px solid #000;
+    margin: 0 auto;
+}
+
+.cake-middle {
+    width: 80px;
+    height: 20px;
+    background: #ff758f;
+    border: 4px solid #000;
+    margin: 0 auto;
+}
+
+.cake-bottom {
+    width: 100px;
+    height: 25px;
+    background: #c9184a;
+    border: 4px solid #000;
+    margin: 0 auto;
+}
+
+@keyframes flicker {
+    0% { transform: scale(1); opacity: 0.9; }
+    100% { transform: scale(1.2); opacity: 1; }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+/* Photo Grid */
 .photo-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
     max-width: 900px;
-    margin: 0 auto;
+    margin: 20px auto;
 }
 
-/* Pixel-art style border for photos */
 .pixel-frame {
     background: #fff;
     padding: 10px;
     border: 4px solid var(--pixel-border);
-    box-shadow: 
-        4px 4px 0px #ff69b4, /* Pink accent shadow */
-        8px 8px 0px #00ced1; /* Blue accent shadow */
+    box-shadow: 4px 4px 0px #ff69b4, 8px 8px 0px #00ced1;
+    cursor: pointer;
     transition: transform 0.2s;
 }
 
 .pixel-frame:hover {
-    transform: scale(1.05);
+    transform: scale(1.04);
 }
 
 .pixel-frame img {
@@ -70,13 +125,53 @@ h1, h2 {
     image-rendering: pixelated;
     display: block;
 }
-/* Petal Explosion Canvas */
+
+/* Modal Popup */
+.modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.pixel-frame-modal {
+    background: #fff;
+    border: 4px solid #000;
+    box-shadow: 8px 8px 0px #ff69b4;
+    padding: 20px;
+    max-width: 500px;
+    width: 85%;
+    position: relative;
+}
+
+.pixel-frame-modal img {
+    width: 100%;
+    max-height: 350px;
+    object-fit: contain;
+    border: 2px solid #000;
+}
+
+.close-btn {
+    position: absolute;
+    top: 5px; right: 12px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+#modal-msg {
+    margin-top: 15px;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
 #petal-canvas {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none; /* Allows user to click through the animation */
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    pointer-events: none;
     z-index: 9999;
 }
