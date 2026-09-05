@@ -23,6 +23,8 @@ const canvas = document.getElementById('fx-canvas');
 const ctx = canvas.getContext('2d');
 
 // ===================== COUNTDOWN =====================
+let countdownTimer;
+
 function updateCountdown() {
   const now = new Date();
   const diff = BIRTHDAY_DATE - now;
@@ -30,7 +32,7 @@ function updateCountdown() {
   if (diff <= 0) {
     preView.classList.add('hidden');
     postView.classList.remove('hidden');
-    clearInterval(countdownTimer);
+    if (countdownTimer) clearInterval(countdownTimer);
     return;
   }
 
@@ -46,7 +48,7 @@ function updateCountdown() {
 }
 
 updateCountdown();
-const countdownTimer = setInterval(updateCountdown, 1000);
+countdownTimer = setInterval(updateCountdown, 1000);
 
 // If we're already past the birthday on load, jump straight to reveal view.
 if (new Date() >= BIRTHDAY_DATE) {
